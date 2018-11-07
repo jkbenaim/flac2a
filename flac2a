@@ -9,12 +9,22 @@ flac2aac)
 flac2mp3)
 	DIRNAME="mp3"
 	EXTENSION="mp3"
-	FFMPEG_OPTS="-c:a libmp3lame -q:a 0"
+	FFMPEG_OPTS="-c:a libmp3lame -q:a 0 -vn"
+	;;
+flac2mp3320)
+	DIRNAME="mp3320"
+	EXTENSION="mp3"
+	FFMPEG_OPTS="-c:a libmp3lame -b:a 320k -vn"
 	;;
 flac2opus)
 	DIRNAME="opus"
 	EXTENSION="ogg"
 	FFMPEG_OPTS="-c:a libopus -b:a 128k"
+	;;
+flac2wav)
+	DIRNAME="wav"
+	EXTENSION="wav"
+	FFMPEG_OPTS="-c:a pcm_s16le"
 	;;
 *)
 	echo "$0: unrecognized name"
