@@ -4,7 +4,7 @@ case $(basename "$0") in
 flac2aac)
 	DIRNAME="aac"
 	EXTENSION="m4a"
-	FFMPEG_OPTS="-c:a aac -b:a 160k"
+	FFMPEG_OPTS="-c:a aac -b:a 192k -c:v png -vf scale=-1:120 -ar 44100"
 	;;
 flac2mp3)
 	DIRNAME="mp3"
@@ -19,7 +19,7 @@ flac2mp3320)
 flac2opus)
 	DIRNAME="opus"
 	EXTENSION="ogg"
-	FFMPEG_OPTS="-c:a libopus -b:a 128k"
+	FFMPEG_OPTS="-c:a libopus -b:a 128k -vn"
 	;;
 flac2wav)
 	DIRNAME="wav"
@@ -33,10 +33,10 @@ flac2wav)
 esac
 
 # Create target directory tree.
-find -type f -name \*.flac				\
+find -type f -name \*.flac -or -name \*.aiff -or -name \*.wav	\
 	| while read i ; do dirname "$i" ; done		\
 	| while read i ; do mkdir -p "${DIRNAME}/$i" ; done
 
 # Convert.
-find -type f -name \*.flac				\
+find -type f -name \*.flac -or -name \*.aiff -or -name \*.wav	\
 	| parallel --bar --eta -- ffmpeg -loglevel fatal -y -i "{}" ${FFMPEG_OPTS} "${DIRNAME}/{.}.${EXTENSION}"
